@@ -1,7 +1,7 @@
 # This file is only used when we want to run our application in a DEVELOPMENT environment.
 # In the future, we'll create another "Dockerfile" for running the same application in a PRODUCTION environment.
 
-FROM node:alpine
+FROM node:8-alpine
 
 WORKDIR '/app'
 
