@@ -13,7 +13,7 @@ RUN npm run build
 
 # Next phase (this FROM statement simply terminates each successful block, in our case "builder" one)
 FROM nginx
-# we haven't uses the (EXPOSE) instruction before in a deveopment environment.
+# we haven't uses the (EXPOSE) instruction before in a development environment.
 # for me as developer it's only an "information" to read and understand - oo, this container
 # probably need a port mapping to port 80. So on my machine, putting that instraction does completely nothing.
 # ---
