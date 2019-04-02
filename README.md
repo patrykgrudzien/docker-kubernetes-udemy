@@ -37,18 +37,18 @@
 13. **`WORKDIR /usr/app`** - any following command will be executed relative to this path in the container
 
 
-#### <u>Section 5:</u>
+#### <u>Section 5 (Docker Compose with Multiple Local Containers):</u>
 1. **`Docker compose`** - separate **CLI** that gets installed along with Docker. Used to start up multiple
 Docker containers at the same time. Automates some of the long-winded arguments we were passing to `docker run`.
     * `docker run <image_id> = docker-compose up`
-    * `docker build . + docker run <image_id> = docker-compose up -build`
+    * `docker build . + docker run <image_id> = docker-compose up --build`
     * Launch in the background: `docker-compose up -d`
     * Stop containers: `docker-compose down`
     * `docker ps = docker-compose ps` (it can be run in the folder that contains `docker-compose.yml`)
 2. docker build with custom Dockerfile name: `docker build -f <file_name>`
 
 
-#### <u>Section 6:</u>
+#### <u>Section 6 (Creating a Production-Grade Workflow):</u>
 1. Docker <u>**volume**</u>:
     * Inside container we no longer copy content from local directory.
     * We essentially set up a **`placeholder`** of sorts inside of a docker container. And by doing so, we’re no longer 
@@ -77,14 +77,17 @@ refresh automatically when we change or add them.
         3. Downside to this approach is that we get logging results to web app (in the same console) that exposes port
         to outside world and we <u>**we cannot attach to standard input process**</u> to operate interactively with
         container running tests.
-3. **Lecture 77** - when we run `docker attach <container_id` we always attach to 
+3. **Lecture 77** - when we run `docker attach <container_id>` we always attach to 
 <u>**standard in (stdin) of the primary process (with ID=1) of the container!**</u><br>
 That's why, accordingly to **`(annotation#1)`** we cannot interact with results from `test` service (container) as inside,
 after listing all processes with `ps` command, we can see that there are many processes running and that one responsible
 for executing tests, **`is not the primary one!`**
 
 
-#### <u>Section 9:</u>
+#### <u>Section 9 ("Dockerizing" Multiple Services):</u>
 1. In `package.json` files, there is a script: `"dev": "nodemon"`
     * `nodemon` is a little command line tool that can be used to automatically reload my entire project whenever source
     code inside is changed.
+    
+    
+#### <u>Section 10 (A Continuous Integration Workflow for Multiple Images):</u>
