@@ -1,0 +1,51 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      // name of the container
+      "name": "api",
+      "image": "jurik99/multi-api",
+
+      // inside docker-compose.yml we had different services
+      // it was some kind of 'domain' and we could refer to it to access a service that is hosted by the service
+      // hostname in something similar in case of AWS
+      "hostname": "api",
+
+      // essential means that this specific container is not gonna be essential
+      // if we marked is as "true" and it crashed for some reason, then all the other containers
+      // in this group of containers would be CLOSED AT THE SAME TIME !!!
+      // AT LEAST ONE "SERVICE" in this list of container definitions MUST BE MARKED AS ESSENTIAL !!!
+      "essential": false
+    },
+    {
+      "name": "client",
+      "image": "jurik99/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "ngnix",
+      "image": "jurik99/multi-ngnix",
+      // not adding "hostname" property as no other service is gonna connect to this one (only client from the browser)
+      "essential": true, // IMPORTANT !!!
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      // to easily communicate between containers (form links from "nginx" to [...] containers)
+      // NAME property (not "hostname") is used inside this array !!!
+      "links": [
+        "api",
+        "client"
+      ]
+    },
+    {
+      "name": "worker",
+      "image": "jurik99/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    }
+  ]
+}

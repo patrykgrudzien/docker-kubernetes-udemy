@@ -96,4 +96,8 @@ for executing tests, **`is not the primary one!`**
 
 
 #### <u>Section 11 (Multi-Container Deployment to AWS):</u>
-1. 
+1. All content is mostly included in **`*.png`** screenshots
+2. Note to **`amazon-EB-4.png`** & **`amazon-EB-5.png`** screenshots - instructions how to define `Container Definition` 
+point to `task definition` inside **`Amazon Elastic Container Service (ECS)`** and we need to look into documentation 
+how this structure of instructions must look like.
+  
