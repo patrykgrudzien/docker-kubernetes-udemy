@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+
+  # For server I need to:
+  # 1) Specify a build
+  # 2) Specify volumes
+  # 3) Specify env variables
+  api:   # it's some kind of 'domain' and we can refer to it to access a service that is hosted by the service
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    volumes:
+      # Inside a container, don't try to override this folder (telling container to leave this folder as it is)
+      - /app/node_modules
+      - ./api:/app
+    # I need to setup environment variables because "index.js" file uses "keys.js" constants that refers to (process.env)
+    # There are 2 different ways of setting up env variables, look at (environment-variables-setup-types.png)
+    environment:
+      - REDIS_HOST=redis  # "redis" here is simply one of my services specified above -> line: 6
+      - REDIS_PORT=6379   # look at the documentation in (hub.docker.com)
+      - PGUSER=postgres   # all below values for remaining env variables taken form the video
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+  # So far, we didn't expose any port mapping neither for 'server' service, nor 'client' service.
+  # We'll use 'nginx' for that.
+  nginx:
+    restart: always   # I want to have "nginx" service always running no matter what
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./ngnix
+    ports:
+      - '3050:80'

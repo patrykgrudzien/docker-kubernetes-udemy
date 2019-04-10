@@ -93,3 +93,7 @@ for executing tests, **`is not the primary one!`**
 #### <u>Section 10 (A Continuous Integration Workflow for Multiple Images):</u>
 1. All content is mostly included in **`*.png`** screenshots
 2. **Lecture 131** - delete test content from `./complex/client/src/App.test.js`
+
+
+#### <u>Section 11 (Multi-Container Deployment to AWS):</u>
+1. 
