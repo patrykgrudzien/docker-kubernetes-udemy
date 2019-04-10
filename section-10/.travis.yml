@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jurik99/react-test -f ./complex/client/Dockerfile.dev ./complex/client
+
+script:
+  - docker run jurik99/react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t jurik99/multi-api ./complex/api
+  - docker build -t jurik99/multi-client ./complex/client
+  - docker build -t jurik99/multi-ngnix ./complex/ngnix
+  - docker build -t jurik99/multi-worker ./complex/worker
+
+  # Take those images and push them to docker hub (firstly I need to login to "docker CLI").
+  # Via terminal it can be done using: (docker login) command.
+  # We need to do the same inside that script.
+  # To login securely, we need to set up ENVIRONMENT VARIABLES inside travis-ci.
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Explanation to the command above:
+  #
