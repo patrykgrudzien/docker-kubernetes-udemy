@@ -100,4 +100,8 @@ for executing tests, **`is not the primary one!`**
 2. Note to **`amazon-EB-4.png`** & **`amazon-EB-5.png`** screenshots - instructions how to define `Container Definition` 
 point to `task definition` inside **`Amazon Elastic Container Service (ECS)`** and we need to look into documentation 
 how this structure of instructions must look like.
-  
+3. In the development environment, we use AWS services:
+    1. AWS Elastic Cache
+    2. AWS Relational Database Service
+    * **Note:** I'm not creating separate containers for `postgres` & `redis` as those provided by AWS have handful 
+    set of features (look at screenshots).
