@@ -31,3 +31,44 @@ after_success:
   - docker push jurik99/multi-client
   - docker push jurik99/multi-ngnix
   - docker push jurik99/multi-worker
+  -
+# configuration used to deploy the app into AWS (THIS SECTION BELOW IS COPIED FROM THE PREVIOUS ".travis.yml" FILE)
+deploy:
+  # travis-ci comes preconfigured to deploy our app to a handful of a different providers
+  provider: elasticbeanstalk
+  region: "us-east-2"   # that value comes from URL from AWS application's console
+  app: "multi-docker"
+  env: "MultiReact-env"
+  # when travis decides to deploy my code base, it's gonna take all files inside github repo
+  # it's gonna zip them all inside (1 zip) file and it's gonna copy it to (S3 bucket)
+  # which is essentially a hard-drive running on the AWS. Once the copy is over, travis-ci is gonna
+  # inform (elasticbeanstalk)  - hey I just uploaded new zip file to S3, use that to redeploy an application.
+  # when I initialized elasticbeanstalk instance, S3 was automatically created for me as well.
+  bucket_name: "elasticbeanstalk-us-east-2-722678999417"
+  # that bucket above ("elasticbeanstalk-us-east-2-722678999417"), which is a S3 - it holds all different files
+  # and it's being reused by all other created "elasticbeanstalk" environments and inside we need to look for
+  # a folder which name is = to APPLICATION NAME. When I first create "elasticbeanstalk" instance, that folder
+  # is not created by default automatically. It's gonna be created when I first time deploy the application.
+  bucket_path: "docker-multi"
+  # in the deployment flow, we set that any time we push the code to the "feature" branch, later we create a
+  # pull-request to merge into master and only after that we run travis-ci and deploy to AWS.
+  # if we push the code to "feature" branch, we don't want to run travis-ci and deploy.
+  on:
+    branch: master
+  # last thing we have to add here is a set of API keys. They are gonna give us an access to my AWS account
+  # over to travis-ci.
+  # Go to AWS console -> Services -> search for (IAM)
+  # IAM - is a service for managing API keys that can be used by outside services.
+  # Later, go to left hand side -> "Users" to create a user that's gonna be used by travis-ci -> Add User -> Access Type -> Programmatic access
+  # -> Next -> Set permissions -> Attach existing policies directly
+  # Those policies are essentially permissions.
+  # -> Search for "beanstalk" -> and select that policy that has "Provides full access..." test in the description section on the right.
+  # After step above, set of API keys is generated and can be user be travis-ci to deploy an app to AWS.
+  # We need to take: (Access key ID) and (Secret access key) but we don't want to take those keys directly and put
+  # them here because GitHub repo is public and everyone has an access to it.
+  # Instead, we want to make use of something called -> ENVIRONMENT SECRETS (provided by travis-ci).
+  # Go to projects in travis-ci -> on the right -> "More options" -> Settings -> Scroll down to "Environment variables"
+  # to create specific variables which will be kept and encrypted by travis-ci.
+  access_key_id: $AWS_ACCESS_KEY # one of the env variable I've created inside travis-ci
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"   # wrap with " "

@@ -15,13 +15,15 @@
       // if we marked is as "true" and it crashed for some reason, then all the other containers
       // in this group of containers would be CLOSED AT THE SAME TIME !!!
       // AT LEAST ONE "SERVICE" in this list of container definitions MUST BE MARKED AS ESSENTIAL !!!
-      "essential": false
+      "essential": false,
+      "memory": 128
     },
     {
       "name": "client",
       "image": "jurik99/multi-client",
       "hostname": "client",
-      "essential": false
+      "essential": false,
+      "memory": 128
     },
     {
       "name": "ngnix",
@@ -39,13 +41,15 @@
       "links": [
         "api",
         "client"
-      ]
+      ],
+      "memory": 128
     },
     {
       "name": "worker",
       "image": "jurik99/multi-worker",
       "hostname": "worker",
-      "essential": false
+      "essential": false,
+      "memory": 128
     }
   ]
 }

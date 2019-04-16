@@ -105,3 +105,20 @@ how this structure of instructions must look like.
     2. AWS Relational Database Service
     * **Note:** I'm not creating separate containers for `postgres` & `redis` as those provided by AWS have handful 
     set of features (look at screenshots).
+4. **Lecture 148** - important to set `ENVIRONMENT VARIABLES` as we did in `docker-compose.yml`
+    * When we worked with `docker-compose.yml` we had to add `environment` section where we listed all environment variables
+    for specific service e.g. `api` & `worker`.
+    * In case of AWS ElasticBeanstalk, when we set up those env variables - they are got automatically added to **all different containers**
+    that were defined in the `Dockerrun.aws.json` file ! 
+5. **Lecture 148** - updates to `.travis.yml` file:
+    1. Once we push our images to `Docker Hub`, we need to "notify" `AWS` to pull those images and deploy
+    2. The only file that we have to send over to AWS is the `Dockerrun.aws.json` file
+6. **Lecture 151** - we must specify at least one of `memory` or `memoryReservation` setting for `client` container definition
+    (<u>**we'll do it for each service/container definition**</u>) 
+    1. In other case, we'll see an **ERROR** inside AWS console !
+7. **Lecture 155** - remember to shutdown:
+    * EB Instance
+    * RDS (Postgres)
+    * EC (Redis)
+    * Security Group (VPC -> Security Group) - `Optional`
+    * IAM - `Optional`
