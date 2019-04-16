@@ -122,3 +122,16 @@ how this structure of instructions must look like.
     * EC (Redis)
     * Security Group (VPC -> Security Group) - `Optional`
     * IAM - `Optional`
+
+
+#### <u>Section 12 (Onwards to Kubernetes!):</u>
+1. Question that we may ask ourselves here is - how could we scale our application on AWS?
+2. Elastic Beanstalk by default creates <u>**additional copies of the entire set of containers !!!**</u>
+3. As developers, we're interacting with a `Kubernetes Cluster` by reaching to the ->  **`Master`** (master controls what each Node does)
+4. **Commands:**
+    1. `minikube start` - it's gonna automatically access the copy of `VirtualBox`, it's gonna use it to set up the virtual machine and configure 
+    this machine to behave as `Kubernetes` `Node`
+    2. `minikube status`
+    3. `kubectl cluster-info`
+    
+ 
